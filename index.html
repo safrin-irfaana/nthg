@@ -1,1 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spider-Verse Personal Access</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:wght@300;400;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --spidey-red: #b11313;
+            --spidey-blue: #1e3a8a;
+            --marvel-red: #ed1d24;
+            --glass: rgba(0, 0, 0, 0.75);
+        }
 
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+            background-color: #020202;
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+        }
+
+        /* Moving Web Background */
+        #web-canvas { position: fixed; top: 0; left: 0; z-index: 1; opacity: 0.4; }
+
+        /* Login Screen */
+        #login-screen {
+            position: absolute; z-index: 100;
+            width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+            transition: 1s ease-in-out;
+        }
+
+        .portal {
+            width: 300px; padding: 40px;
+            border: 2px solid var(--spidey-red);
+            border-radius: 15px; text-align: center;
+            box-shadow: 0 0 25px var(--spidey-red);
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        h2 { font-family: 'Bangers', cursive; letter-spacing: 2px; color: var(--marvel-red); font-size: 2.5rem; margin: 0;}
+
+        input {
+            width: 85%; padding: 12px; margin: 20px 0;
+            background: rgba(255,255,255,0.1); border: 1px solid var(--spidey-blue);
+            color: white; text-align: center; font-size: 1.2rem; border-radius: 5px;
+        }
+
+        .btn {
+            padding: 12px 30px; background: var(--spidey-red);
+            color: white; border: none; cursor: pointer;
+            font-family: 'Bangers', cursive; font-size: 1.3rem;
+            transition: 0.3s; border-radius: 5px;
+        }
+        .btn:hover { background: white; color: var(--spidey-red); transform: scale(1.05); }
+
+        /* Main Container for Pages */
+        .page-container {
+            position: relative; z-index: 10;
+            height: 100vh; width: 100vw;
+            display: none; flex-direction: column;
+            justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 1s;
+        }
+
+        /* Birthday Page (Page 1) */
+        #birthday-page { display: flex; text-align: center; }
+
+        .wish-card {
+            max-width: 600px; padding: 40px;
+            background: var(--glass); border-radius: 30px;
+            border: 2px solid var(--spidey-blue);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 40px rgba(30, 58, 138, 0.5);
+            animation: float 4s infinite ease-in-out;
+        }
+
+        .tamil-text { font-size: 1.6rem; line-height: 1.6; margin-bottom: 25px; }
+
+        /* Letter Page (Page 2) */
+        #letter-page { display: none; overflow-y: auto; padding: 20px 0; }
+
+        .letter-content {
+            max-width: 500px; background: rgba(255, 255, 255, 0.95);
+            color: #1a1a1a; padding: 40px;
+            border-radius: 5px; position: relative;
+            box-shadow: 10px 10px 0px var(--spidey-red);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.7; margin: auto;
+        }
+
+        .letter-content h3 { font-family: 'Caveat', cursive; font-size: 2.2rem; color: var(--spidey-blue); margin-top: 0; }
+        .letter-body { font-size: 1.05rem; }
+
+        /* Quotes Section */
+        .quote-box {
+            font-style: italic; color: var(--marvel-red);
+            margin: 20px 0; border-left: 3px solid var(--spidey-red);
+            padding-left: 15px; font-weight: bold;
+        }
+
+        /* Navigation Button */
+        .nav-spidey {
+            margin-top: 30px; cursor: pointer;
+            transition: 0.5s; filter: drop-shadow(0 0 5px white);
+        }
+        .nav-spidey:hover { transform: rotate(15deg) scale(1.1); }
+
+        /* Animations */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        
+        .visible { display: flex !important; opacity: 1 !important; }
+        .hidden { display: none !important; }
+
+    </style>
+</head>
+<body>
+
+    <canvas id="web-canvas"></canvas>
+
+    <div id="login-screen">
+        <div class="portal">
+            <h2>ACCESS CODE?</h2>
+            <input type="password" id="passkey" placeholder="Enter 2118">
+            <button class="btn" onclick="unlock()">ENTER MULTIVERSE</button>
+        </div>
+    </div>
+
+    <div id="birthday-page" class="page-container">
+        <div class="wish-card">
+            <img src="https://www.pngmart.com/files/12/Spider-Man-Mask-PNG-Transparent-Image.png" width="80" alt="mask">
+            <p class="tamil-text">
+                Universe la romba per irukaanga…<br>
+                aana enakku romba pudichama aana oruthan nee dhaan 😌<br><br>
+                <span style="font-family: 'Bangers'; color: var(--marvel-red); font-size: 2.8rem;">Happy birthday chello! 😚💙</span>
+            </p>
+            <div onclick="showLetter()" class="nav-spidey">
+                <p style="font-size: 0.8rem; margin: 0;">Tap the mask to open secret file</p>
+                <img src="https://cdn-icons-png.flaticon.com/512/547/547432.png" width="50" style="filter: invert(1);">
+            </div>
+        </div>
+    </div>
+
+    <div id="letter-page" class="page-container">
+        <div class="letter-content">
+            <h3>Happy Birthday, my love 💙🤍</h3>
+            <div class="letter-body">
+                I don’t even know where to start.. you are not just my boyfriend you are my happiness, my peace and the most beautiful part of my life. 
+                <br><br>
+                Even though miles keep us apart today but my heart is always right there with you. I wish I could be beside you right now to hug you tightly, look into your eyes, and celebrate your special day together.. 
+                
+                <div class="quote-box">
+                    "I love you in every universe." <br>
+                    — Stephen Strange
+                </div>
+
+                Distance feels harder because all I want is you. Thank you for loving me, understanding me, and being my strength even from far away. 
+                <br><br>
+                You mean more to me than words can ever express. Even through one call and messages of yours is so special to me. 
+                
+                <div class="quote-box">
+                    "You're the MJ to my Peter Parker... the one who keeps me grounded."
+                </div>
+
+                Sending you all my love, hugs, and kisses through this message. Stay happy, stay safe and keep smiling for me. 
+                <br><br>
+                <b>I love you so much forever and always ♥️🫂</b>
+            </div>
+            <button class="btn" style="margin-top:20px; width:100%" onclick="backToStart()">Back to Start</button>
+        </div>
+    </div>
+
+    <script>
+        function unlock() {
+            const code = document.getElementById('passkey').value;
+            if(code === "2118") {
+                document.getElementById('login-screen').style.opacity = "0";
+                setTimeout(() => {
+                    document.getElementById('login-screen').classList.add('hidden');
+                    document.getElementById('birthday-page').classList.add('visible');
+                }, 1000);
+            } else {
+                alert("❌ ur not my varient ..");
+            }
+        }
+
+        function showLetter() {
+            document.getElementById('birthday-page').classList.remove('visible');
+            setTimeout(() => {
+                document.getElementById('letter-page').classList.add('visible');
+            }, 500);
+        }
+
+        function backToStart() {
+            document.getElementById('letter-page').classList.remove('visible');
+            setTimeout(() => {
+                document.getElementById('birthday-page').classList.add('visible');
+            }, 500);
+        }
+
+        // --- Web Animation Logic ---
+        const canvas = document.getElementById('web-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let particles = [];
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.speedX = (Math.random() - 0.5) * 1.5;
+                this.speedY = (Math.random() - 0.5) * 1.5;
+            }
+            update() {
+                this.x += this.speedX; this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0; if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0; if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = 'white';
+                ctx.beginPath(); ctx.arc(this.x, this.y, 1.5, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        function init() { for (let i = 0; i < 70; i++) particles.push(new Particle()); }
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, index) => {
+                p.update(); p.draw();
+                for (let j = index; j < particles.length; j++) {
+                    const dx = p.x - particles[j].x;
+                    const dy = p.y - particles[j].y;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    if (dist < 120) {
+                        ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+                        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
+                    }
+                }
+            });
+            requestAnimationFrame(animate);
+        }
+        init(); animate();
+    </script>
+</body>
+</html>
